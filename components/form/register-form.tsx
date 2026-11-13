@@ -53,19 +53,22 @@ export default function RegisterForm() {
       onSubmit: registerSchema,
     },
 
-    onSubmit: async ({ value }) => {
-      try {
-        const { confirmPassword, ...payload } = value;
+ onSubmit: async ({ value }) => {
+  try {
+    const { confirmPassword, ...payload } = value;
 
-        await registerMutation.mutateAsync(payload);
+    if (confirmPassword !== value.password) return;
 
-        toast.success("Account created successfully!");
+    await registerMutation.mutateAsync(payload);
 
-        router.replace("/");
-      } catch (error) {
-        toast.error(getErrorMessage(error));
-      }
-    },
+    toast.success("Account created successfully!");
+
+    router.replace("/");
+  } catch (error) {
+    toast.error(getErrorMessage(error));
+  }
+},
+
   });
 
   return (
